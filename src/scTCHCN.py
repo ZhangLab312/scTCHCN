@@ -35,7 +35,7 @@ from tqdm import tqdm
 # import cupy as cp
 # from scipy.sparse import csr_matrix
 # 设置设备
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 # 定义参数量统计函数
