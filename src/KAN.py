@@ -3,6 +3,12 @@ import torch.nn.functional as F
 import math
 
 """
+1. Improved memory efficiency: The original implementation required expanding all intermediate variables to apply different activation functions. In this code, the computation is reformulated to use different basis functions to activate the input and then linearly combine them. This reformulation significantly reduces memory costs and makes computation more efficient.
+
+2. Change in regularization method: The original implementation used L1 regularization, which required nonlinear operations on tensors, incompatible with the reformulated computation. Therefore, this code changes L1 regularization to L1 regularization on weights, which is more aligned with common regularization methods in neural networks and compatible with the reformulated computation.
+
+3. Activation function scaling option: The original implementation included learnable scaling for each activation function, but this library provides an option to disable this feature. Disabling scaling can make the model more efficient but may affect results.
+
 1.内存效率提升：原始实现需要扩展所有中间变量来执行不同的激活函数，而此代码中将计算重新制定为使用不同的基函数激活输入，
   然后线性组合它们。这种重新制定可以显著降低内存成本，并将计算变得更加高效。
 
