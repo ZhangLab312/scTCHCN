@@ -1,13 +1,19 @@
 '''
-先说我们这个模型的主题框架吧，但是你不要先写代码，我会一个部分一个部分让你来写的。
+Let's start with the theme framework of our model, but don't write the code yet. I'll guide you through each part step by step.
 
-首先，我这个框架取名字叫scTCHCN，框架是一个自监督蒸馏学习模型。
+首先，我们这个框架的主题是自监督蒸馏学习模型，名为scTCHCN。
 
-这里的老师模型是一个由两个通道输入的自编码器模型，第一个输入通道是一个序列数据组成的编码器，第二个输入通道是一个由图构成的图编码器，分别由这两个编码器输出数据特征通过拼接特征（序列特征拼接所有图中节点的特征组成的特征）再输入这个Teacher模型（又多层Transformer模型的编码器构成对拼接的特征进行全局特征学习）然后输出的特征数据按照两个输出通道进行输入到后面的层（第一种输出通道是将输出的特征按照之前拼接的输入通道一和输入通道二分别送入一个序列解码器和一个图解码器，第二种输出通道是将Transformer编码器输出的特征送入Student模型中进行学习教师蒸馏的数据）。
+Here, the teacher model is an autoencoder model with two input channels. The first input channel is an encoder for sequence data, and the second input channel is a graph encoder for graph-structured data. The features extracted by these two encoders are concatenated (sequence features concatenated with features from all nodes in the graph) and input into the Teacher model, which is a multi-layer Transformer encoder that performs global feature learning on the concatenated features. The output features are then processed through two output channels: the first output channel sends the features to a sequence decoder and a graph decoder based on the previously concatenated input channels, and the second output channel sends the Transformer encoder's output features to the Student model for distillation learning.
 
-学生模型是一个参数规模更小的Transformer编码器层，他接受来自输入端的序列数据，和从Teacher模型传入的数据，通过这两个数据进行自监督的编码器重构数据表达量，达到蒸馏学习Teacher模型中两个输入通道的能力。
+这里的老师模型是一个由两个通道输入的自编码器模型。第一个输入通道是一个序列数据组成的编码器，第二个输入通道是一个由图构成的图编码器。两个编码器输出的数据特征通过拼接（序列特征拼接所有图中节点的特征）后输入到Teacher模型中，这个模型由多层Transformer编码器构成，用于对拼接的特征进行全局特征学习。输出的特征数据通过两个输出通道输入到后续层：第一种输出通道将特征按照之前拼接的输入通道一和输入通道二分别送入一个序列解码器和一个图解码器；第二种输出通道将Transformer编码器的输出特征送入Student模型中进行教师蒸馏学习。
 
-这里面Teacher模型和Student模型都是一个自监督模型，其中老师模型使用了序列编码器和图编码器两个提取特征因此更为复杂，学生模型是仅包含序列编码器的模型，通过老师传授的数据特征，掌握了学习多个通道不同编码器提取的特征的知识。
+The student model is a smaller Transformer encoder layer that accepts sequence data from the input side and data transferred from the Teacher model. It performs self-supervised encoding to reconstruct data representations, thereby learning the distillation of the abilities of the two input channels in the Teacher model.
+
+学生模型是一个规模较小的Transformer编码器层，它接受来自输入端的序列数据和从Teacher模型传入的数据。通过自监督编码器重构数据表达量，实现对Teacher模型中两个输入通道能力的蒸馏学习。
+
+Both the Teacher model and the Student model are self-supervised models. The Teacher model is more complex as it uses both sequence and graph encoders to extract features, while the Student model only includes a sequence encoder and learns the features extracted by multiple encoders from the Teacher.
+
+这里的Teacher模型和Student模型都是自监督模型。老师模型使用了序列编码器和图编码器提取特征，因此更为复杂；学生模型仅包含序列编码器，通过学习老师模型传授的数据特征，掌握了从多个通道不同编码器提取特征的能力。
 '''
 import csv
 import os
