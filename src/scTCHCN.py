@@ -505,8 +505,8 @@ def main():
     max_no_improvement = 30  # 最大连续未改善epoch的数量
 
     # 文件夹路径
-    base_path = '/private/litianhao/scTCHCN/data/processed/'
-    model_path = '/private/litianhao/scTCHCN/data/'
+    base_path = '/private/scTCHCN/data/processed/'
+    model_path = '/private/scTCHCN/data/'
 
     folders = []
     file_path = 'no_folder_name.csv'
